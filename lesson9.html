@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <h1 align="center">Marksheet</h1>
+    <hr>
+    <table id="myTable" align="center" border="3" cellpadding="5" width="70%">
+        <thead>
+            <tr bgcolor="#eeeeee">
+                <th width="35%">Name</th>      
+                <th>Maths</th>      
+                <th>Secience</th>      
+                <th>English</th>
+                <th width="30%" align="right">Total</th>      
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Gautam</th>
+                <th>80</th>
+                <th>80</th>
+                <th>80</th>
+                <th align="right">240</th>
+            </tr>
+            <tr>
+                <th>Jay</th>
+                <th>70</th>
+                <th>80</th>
+                <th>80</th>
+                <th align="right">230</th>
+            </tr>
+            <tr>
+                <th>Vivek</th>
+                <th>90</th>
+                <th>70</th>
+                <th>80</th>
+                <th align="right">240</th>
+            </tr>
+        </tbody>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="http://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+</body>
+</html>
