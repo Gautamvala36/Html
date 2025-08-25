@@ -1,0 +1,1826 @@
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+{% style %}
+  :root {
+    --heading-font-scale: 1;
+    --body-font-scale: 1;
+
+    /* --mt-h1-large: calc(var(--heading-font-scale) * 50px);
+    --mt-h1: calc(var(--heading-font-scale) * 40px);
+    --mt-h2: calc(var(--heading-font-scale) * 35px);
+    --mt-h3: calc(var(--heading-font-scale) * 30px);
+    --mt-h4: calc(var(--heading-font-scale) * 25px);
+    --mt-h5: calc(var(--heading-font-scale) * 22px);
+    --mt-h6: calc(var(--heading-font-scale) * 20px); */
+    --mt-h1-large: clamp(3rem, 6vw, 5.5rem); /* ~48px → 88px */
+    --mt-h1: clamp(2.5rem, 5vw, 5rem);       /* ~40px → 80px */
+    --mt-h2: clamp(2rem, 4vw, 3.5rem);       /* ~32px → 56px */
+    --mt-h3: clamp(1.75rem, 3vw, 2.5rem);    /* ~28px → 40px */
+    --mt-h4: clamp(1.5rem, 2.5vw, 1.875rem); /* ~24px → 30px */
+    --mt-h5: clamp(1.25rem, 2vw, 1.75rem);   /* ~20px → 28px */
+    --mt-h6: clamp(1.125rem, 1.5vw, 1.5rem); /* ~18px → 24px */
+    --mt-text-xxs: calc(var(--body-font-scale) * 10px);
+    --mt-text-xs: calc(var(--body-font-scale) * 12px);
+    --mt-text-sm: calc(var(--body-font-scale) * 14px);
+    --mt-text: calc(var(--body-font-scale) * 15px);
+    --mt-text-md: calc(var(--body-font-scale) * 16px);
+    --mt-text-lg: calc(var(--body-font-scale) * 18px);
+    --mt-text-xl: calc(var(--body-font-scale) * 20px);
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      /* --mt-h1-large: calc(var(--heading-font-scale) * 95px);
+      --mt-h1: calc(var(--heading-font-scale) * 80px);
+      --mt-h2: calc(var(--heading-font-scale) * 50px);
+      --mt-h3: calc(var(--heading-font-scale) * 40px);
+      --mt-h4: calc(var(--heading-font-scale) * 30px);
+      --mt-h5: calc(var(--heading-font-scale) * 28px);
+      --mt-h6: calc(var(--heading-font-scale) * 24px); */ 
+      --mt-text-xxs: calc(var(--body-font-scale) * 12px);
+      --mt-text-xs: calc(var(--body-font-scale) * 14px);
+      --mt-text-sm: calc(var(--body-font-scale) * 16px);
+      --mt-text: calc(var(--body-font-scale) * 18px);
+      --mt-text-md: calc(var(--body-font-scale) * 20px);
+      --mt-text-lg: calc(var(--body-font-scale) * 22px);
+      --mt-text-xl: calc(var(--body-font-scale) * 26px);
+    }  
+  }  
+
+
+  #shopify-section-{{ section.id }} {
+    height: 270vh;
+    position: relative;
+  }
+
+  .mt-{{ section.id }} {
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: background 0.5s ease;
+    /* position: relative; */
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    /* height: 100vh; */
+  }
+
+  .mt-{{ section.id }} * {
+    font-family: Rubik, sans-serif;
+  }
+
+  .mt-{{ section.id }}-padding {
+    padding-top: 40px;
+    /* padding-bottom: 40px; */
+    padding-right: 15px;
+    padding-left: 15px;
+    max-width: 140rem;
+    height: 100vh;
+    position: sticky;
+    top:0;
+    margin:0 auto;
+  }
+
+  .mt-front-{{ section.id }} {
+    text-align: center;
+    padding: 20px 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mt-front-{{ section.id }} .mt-front-heading {
+    margin: 0;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: #FFF;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .mt-front-{{ section.id }} .mt-front-description {
+    font-size: 16px;
+    color: #FFF;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .mt-container-{{ section.id }} {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    overflow: hidden;
+      overflow-x: hidden;
+    overflow-x: auto;
+  }
+
+  .mt-{{ section.id }} .tab-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+      overflow-x: hidden;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .mt-{{ section.id }} .tab {
+    background-color: #eee;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg,#ffffff26,#9990);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50px;
+    border-color: #ffffff26;
+    width: 80px;
+    min-width: 80px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0s ease-in-out,width 0s ease-in-out;
+  }
+
+  .mt-{{ section.id }} .tab:not(.active) .icon{
+    position: absolute;
+    overflow: hidden;
+    transform: scale(.9);
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 50px;
+    height: 100%;
+    padding: 0;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+  }
+
+  .mt-{{ section.id }} .tab .icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .mt-{{ section.id }} .tab .label {
+    font-size: 1.2em;
+    color: #1a1a1a;
+    font-weight: bold;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: opacity 0s ease-in-out 0s;
+  }
+
+  .mt-{{ section.id }} .tab.active {
+    width: 80px;
+    min-width: auto;
+    height: 60px;
+    padding: 10px 20px 10px 62px;
+    background: var(--active-background-color);
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--active-color-text);
+    transition: background-color .6s ease-in-out,width .6s ease-in-out;
+  }
+
+  .mt-{{ section.id }} .tab.active .tab-button-icon {
+    top: 0;
+    left: 0;
+    width: auto;
+  }
+
+  .mt-{{ section.id }} .tab.active .label {
+    width: auto;
+    padding: 0 10px;
+    color: var(--active-color-text);
+    font-size: 14px;
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity .6s ease-in-out .6s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .mt-{{ section.id }} .tab-button-icon {
+    position: absolute;
+    overflow: hidden;
+    transform: scale(.9);
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 50px;
+    height: 100%;
+    padding: 0;
+    transition: all .4s ease-in-out;
+  }
+
+  .mt-{{ section.id }} .tab:not(.active) .label {
+    display: none;
+  }
+
+  /* collection list  */
+  .mt-{{ section.id }} .featured-collections-list-tabscontentwrap {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent {
+    display: grid;
+    align-items: start;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner {
+    --text-color: #c4c4c4;
+    --shadow-color: color-mix(in srgb, var(--text-color) 10%, transparent);
+    grid-column: 1;
+    grid-row: 1;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    position: relative;
+    z-index: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    -webkit-user-select: auto;
+    user-select: auto;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner.shadow .tabscontent-inner-media {
+    box-shadow: -8px 13px 15px -5px var(--shadow-color);
+  }
+
+  .mt-{{ section.id }} .tabscontent-inner-media {
+    transition: none;
+    display: block;
+    will-change: transform;
+    border-radius: 25px;
+  }
+
+  .mt-{{ section.id }} .media-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mt-{{ section.id }} .media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 100%;
+  }
+
+  .mt-{{ section.id }} .media-fixed {
+    padding-bottom: 0;
+    height: 100%;
+  }
+
+  .mt-{{ section.id }} .media > *,.mt-{{ section.id }} .media img,.mt-{{ section.id }} .media .placeholder-svg,.mt-{{ section.id }} .media video,.mt-{{ section.id }} .media iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .mt-{{ section.id }} .tabscontent-inner-media .media-fixed {
+    background: white;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner.shadow .tabscontent-inner-text {
+    filter: drop-shadow(-8px 13px 15px -5px var(--shadow-color));
+  }
+  .mt-{{ section.id }} .tabscontent-inner-media.full-width,.mt-{{ section.id }} .tabscontent-inner-text.full-width {
+    grid-column: span 2;
+  }
+
+  .mt-{{ section.id }} .tabscontent-inner-text {
+    --text-box-height: 58px;
+    height: var(--text-box-height);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mt-{{ section.id }} .tabscontent-inner-text-inner {
+    will-change: filter,width;
+    height: 100%;
+    border-radius: 50px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    max-width: 100%;
+    padding: 0 10px 0 25px;
+    background: #f4f4f4;
+  }
+  
+  .mt-{{ section.id }} .card-text {
+    color: #000;
+  }
+
+  .mt-{{ section.id }} .text {
+    font-size: 15px;
+  }
+
+  .mt-{{ section.id }} .tabscontent-inner-text-icon {
+    --svg-wrapper-size: 12px;
+    aspect-ratio: 1;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: #f4f4f4;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mt-{{ section.id }} .svg-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .mt-{{ section.id }} .svg-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mt-{{ section.id }} .svg-icon > svg {
+    height: 80%;
+    width: 80%;
+    object-fit: contain;  
+  }
+
+  .mt-{{ section.id }} .svg-icon > svg > path {
+    fill: var(--active-color-text);
+  }
+
+  .mt-{{ section.id }} .active .svg-icon > svg {
+    border: 2px solid var(--active-color-text);
+    border-radius: 50%;
+    padding: 6px;
+  }
+
+  /* Block Content heading Size */
+  .mt-{{ section.id }} .heading-font {
+    letter-spacing: 0px;
+    line-height: 1.2;
+    margin: 0;
+    margin-bottom: 40px;
+  }
+
+  .mt-{{ section.id }} .h1-large { 
+    font-size: var(--mt-h1-large);
+  }
+
+  .mt-{{ section.id }} .h1 { 
+    font-size: var(--mt-h1);
+  }
+
+  .mt-{{ section.id }} .h2 { 
+    font-size: var(--mt-h2);
+  }
+
+  .mt-{{ section.id }} .h3 { 
+    font-size: var(--mt-h3);
+  }
+
+  .mt-{{ section.id }} .h4 { 
+    font-size: var(--mt-h4);
+  }
+
+  .mt-{{ section.id }} .h5 { 
+    font-size: var(--mt-h5);
+  }
+
+  .mt-{{ section.id }} .h6 { 
+    font-size: var(--mt-h6);
+  }
+  
+    /* Block Content description Size */
+
+  .mt-{{ section.id }} .description-font {
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .mt-{{ section.id }} .description-font.text-xxs {
+    font-size: 11px;
+  }
+
+  .mt-{{ section.id }} .description-font.text-xs {
+    font-size: 13px;
+  }
+
+  .mt-{{ section.id }} .description-font.text-sm {
+    font-size: 15px;
+  }
+
+  .mt-{{ section.id }} .description-font.text {
+    font-size: 16px;
+  }
+
+  .mt-{{ section.id }} .description-font.text-md {
+    font-size: 18px;
+  }
+
+  .mt-{{ section.id }} .description-font.text-lg {
+    font-size: 20px;
+  }
+
+  .mt-{{ section.id }} .description-font.text-xl {
+    font-size: 22px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .mt-{{ section.id }} {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .mt-{{ section.id }}-padding {
+      padding-top: 40px;
+    }
+
+    .mt-front-{{ section.id }} {
+      text-align: center;
+      padding: 20px 0;
+      padding-bottom: 0;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .4s ease-in-out,visibility 0s linear 0s;
+    }
+
+    .mt-front-{{ section.id }}.fade-out-text {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .4s ease-in-out,visibility 0s linear .4s;
+    }
+
+    .mt-front-{{ section.id }} .mt-front-description {
+      font-size: 16px;
+    }
+
+    .mt-{{ section.id }} .tab-container {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      justify-content: center;
+      padding-bottom: 0;
+    }
+
+    .mt-{{ section.id }} .tab {
+      width: 106px;
+      height: 86px;
+    }
+
+    .mt-{{ section.id }} .tab.active {
+      width: 475px;
+      height: 86px;
+      padding: 20px 60px 20px 90px;
+    }
+
+    .mt-{{ section.id }} .tab.active .label {
+      width: auto;
+      padding: 0 10px;
+      font-size: 20px;
+    }
+
+    .mt-container-{{ section.id }} {
+      gap: 30px;
+      padding: 30px 15px;
+      padding-bottom: 0px;
+      position: absolute;
+      top: 50%;
+      top: calc(50% - 146px / 2.4);
+      left: 50%;
+      z-index: 2;
+      transform: translate3d(-50%,0,0);
+      transition: top .8s ease;
+      justify-content: center;
+    }
+
+    .mt-container-{{ section.id }}.sticky-active {
+      top: 0 ;
+      transition: top .8s ease;;
+    }
+
+    /* collection list  */
+    .mt-{{ section.id }} .featured-collections-list-tabscontentwrap {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      transition: transform .6s ease;
+      grid-template-columns: repeat(2,1fr);
+    }
+
+    .mt-{{ section.id }} .featured-collections-list-tabscontentwrap {
+      width: 80%;
+      /* height: 80%; */
+    }
+
+    .mt-{{ section.id }} .featured-collections-list-tabscontentwrap {
+      --header-height-dynamic: 0px;
+      transform: translateY(calc(var(--header-height-dynamic) + 15px));
+    }
+
+    .mt-{{ section.id }} .featured-collections-list-tabscontent {
+      will-change: transform,opacity;
+      opacity: .3;
+      transition: opacity .4s ease-in-out,visibility 0s linear 0s;
+    }
+
+    .mt-{{ section.id }} .featured-collections-list-tabscontent-inner {
+      --list-tabs-height: 146px;
+      --header-height: 72px;
+      gap: 20px;
+      padding: 15px;
+      height: 100%;
+      max-height: calc(100vh - (var(--list-tabs-height) + var(--header-height) + 30px));
+    }
+
+    .mt-{{ section.id }} .list-mainmedia {
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    /* Block Content description Size */
+
+    .mt-{{ section.id }} .description-font.text-xxs {
+      font-size: 12px;
+    }
+
+    .mt-{{ section.id }} .description-font.text-xs {
+      font-size: 14px;
+    }
+
+    .mt-{{ section.id }} .description-font.text-sm {
+      font-size: 16px;
+    }
+
+    .mt-{{ section.id }} .description-font.text {
+      font-size: 18px;
+    }
+
+    .mt-{{ section.id }} .description-font.text-md {
+      font-size: 20px;
+    }
+
+    .mt-{{ section.id }} .description-font.text-lg {
+      font-size: 22px;
+    }
+
+    .mt-{{ section.id }} .description-font.text-xl {
+      font-size: 24px;
+    }
+  }
+
+  .mt-front-{{ section.id }} {
+    transition: opacity 0.5s ease;
+  }
+
+  .collection_list-main-{{ section.id }} {
+    display: block;
+    position: relative;
+    height: 100%;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent {
+    transition: transform 0.6s ease, opacity 0.4s ease;
+  }
+
+  .mt-{{ section.id }} .list-mainmedia {
+    transition: transform 0.4s ease-out;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner {
+    display: none;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-tabscontent-inner.active {
+    display: grid;
+  }
+
+  .mt-{{ section.id }} .featured-collections-text-wrapper {
+    display: grid;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-text.text-left {
+    display: none;
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-text *{
+    color: var(--content-color);
+  }
+
+  .mt-{{ section.id }} .featured-collections-list-text.text-left.fade-in {
+    display: block;
+    color: white;
+  }
+ 
+   
+  .mt-{{ section.id }} .featureWordParent {
+    position: relative;
+    display: inline-block;
+    margin-right: 8px; /* space between words */
+  }
+
+  .mt-{{ section.id }} .featureLetter {
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+    transform: rotateX(90deg);
+    animation: fadeRotateIn 0.8s forwards;
+  }
+
+  @keyframes fadeRotateIn {
+    0% {
+      opacity: 0;
+      transform: rotateX(90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotateX(0deg);
+    }
+  }
+{% endstyle %}
+ 
+<div class="mt-{{ section.id }}">
+  <div class="mt-{{ section.id }}-padding">
+    <div class="collection_list-main-{{ section.id }}">
+      <div
+        class="mt-container-{{ section.id }}"
+      >
+        <div class="tab-group sticky-nav-tabs-container">
+          <div class="tab-wrapper">
+            <div class="tab-container">
+              {% for block in section.blocks %}
+                {% assign collection = block.settings.collection %}
+                <button
+                  class="tab"
+                  data-btn="{{ block.id }}"
+                  data-color="{{ block.settings.active_tab_bg_color }}"
+                  style="--active-background-color: {{ block.settings.active_bg_color }}; --active-color-text: {{ block.settings.active_text_color }};"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="tab-button-icon">
+                    <div class="media media-fixed">
+                      {% assign svg_code = block.settings.custom_svg  %}
+
+                      {% if svg_code contains '<svg' %}
+                        <span class="svg-icon">
+                          {{ svg_code }}
+                        </span>  
+                      {% elsif block.settings.custom_icon != blank %}
+                        <img
+                          src="{{ block.settings.custom_icon | image_url }}"
+                          alt="{{ collection.title }}"
+                          class="icon"
+                          width=""
+                          height=""
+                        >
+                      {% elsif collection.image != blank %}
+                        <img
+                          src="{{ collection.image | image_url }}"
+                          alt="{{ collection.title }}"
+                          class="icon"
+                          width=""
+                          height=""
+                        >
+                      {% else %}
+                       {% assign index = forloop.index0 | modulo: 6 | plus: 1 %}
+                       {{ 'product-' | append: index | placeholder_svg_tag }}     
+                      {% endif %}  
+                    </div>
+                  </div>
+                  <span class="label">
+                    {% if block.settings.tab_title != blank %}
+                      {{ block.settings.tab_title }}
+                    {% else %}  
+                      {{ collection.title }}
+                    {% endif %}
+                  </span>
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+       
+      <div
+        class="mt-front-{{ section.id }} text-center width-md position-top" 
+      >
+        {% if section.settings.heading != blank %}
+          <h3 class="mt-front-heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h3>
+        {% endif %}
+        {% if section.settings.description != blank %}
+          <p class="mt-front-description text-xs {{ section.settings.description_size }}">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+       
+
+      <div class="featured-collections-list-tabscontentwrap">
+        <div class="featured-collections-text-wrapper" feature-collection-list-wrapper="" style="opacity: 0;">
+          {% for block in section.blocks %}
+            <div
+              class="featured-collections-list-text text-left fade-in"
+              data-text-id="{{ block.id }}"
+              style="--content-color: {{ block.settings.content_text_color }}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.heading != blank %}
+                <h2 class="featured-collections-list-text-heading heading-font {{ block.settings.heading_size }}">
+                  {{ block.settings.heading | truncate: 50 }}
+                </h2>
+              {% endif %}
+
+              {% if block.settings.description != blank %}
+                <p class="featured-collections-list-text-description description-font {{ block.settings.description_size }}">
+                  {{ block.settings.description }}
+                </p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div
+          class="featured-collections-list-tabscontent"
+          style="translate: none;rotate: none;scale: none;transform: translate(-100%, 0%) scale(0.7);"
+        >
+          {% for block in section.blocks %}
+            {% assign collection = block.settings.collection %}
+            {% assign display_items = 4 %}
+            {% assign product_index = 0 %}
+            {% assign display_index = 0 %}
+
+            <div
+              class="featured-collections-list-tabscontent-inner shadow active"
+              data-collection-id="{{ block.id }}"
+              {{ block.shopify_attributes }}
+            >
+              <!-- Main Collection Image -->
+              <div class="tabscontent-inner-media media-wrapper list-mainmedia">
+                <div class="media media-fixed">
+                  
+                  {% if block.settings.image != blank %}  
+                    {% assign collection_image = block.settings.image %}  
+                  {% elsif block.settings.video != blank %}  
+                    {% assign collection_video = block.settings.video %} 
+                  {% elsif collection.featured_image != blank %}
+                    {% assign collection_image = collection.featured_image %}
+                  {% endif %}  
+                  {% if collection_image != blank %}
+                  <img
+                    src="{{ collection_image | image_url: width: 920 }}"
+                    srcset="
+                      {{ collection_image | image_url: width: 375 }} 375w,
+                      {{ collection_image | image_url: width: 550 }} 550w,
+                      {{ collection_image | image_url: width: 750 }} 750w
+                    "
+                    width="{{ collection_image.width }}"
+                    height="{{ collection_image.height }}"
+                    loading="lazy"
+                    class="featured-collections-list-image"
+                  >
+                  {% elsif collection_video != blank %}  
+                    {{
+                      collection_video
+                      | video_tag: 
+                        autoplay: true, 
+                        loop: true, 
+                        muted: true, 
+                        playsinline: true, 
+                        controls: false,
+                        class: "featured-collections-tab-video no-js-hidden"
+                    }}
+                  {% else %}
+                    {% assign index = forloop.index0 | modulo: 6 | plus: 1 %}
+                    {{ 'collection-' | append: index | placeholder_svg_tag }}  
+                  {% endif %}  
+                </div>
+              </div>  
+               
+              {% for i in (1..display_items) %}
+                {% assign display_index = display_index | plus: 1 %}
+                
+                {% if display_index == 3 %}
+                  <!-- TEXT BLOCK for Third Item -->
+                  {% if block.settings.typewriter_text != blank %}
+                    <div class="tabscontent-inner-text full-width" style="opacity:1;">
+                      <div class="tabscontent-inner-text-inner" style="opacity:0;">
+                        <p class="body-font card-text text">
+                          {{ block.settings.typewriter_text | truncate: 40 }}
+                        </p>
+                        
+                        <a href="{{ collection.url | default: '#' }}" aria-label="{{ collection.title }}" class="tabscontent-inner-text-icon">
+                          <span class="svg-wrapper">
+                            <svg viewBox="0 0 7 7" fill="none">
+                              <path d="M0.48249 0.923833L0.482511 1.77624L4.82887 1.77626L0.625632 5.77029L1.25997 6.37305L5.4632 2.37902L5.4632 6.50903L6.36025 6.50905L6.36025 0.923812L0.48249 0.923833Z" fill="currentColor"></path>
+                            </svg>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <!-- PRODUCT IMAGE BLOCK for First, Second, and Fourth Items -->
+                  {% comment %} {% if product_index < collection.products.size %} {% endcomment %}
+                    {% assign product = collection.products[product_index] %}
+                    <a href="{{ product.url }}" aria-label="{{ product.title }}" class="tabscontent-inner-media media-wrapper {% if display_index == 4 %}full-width{% endif %}" style="transform: scale(0);">
+                      <div class="media" style="--image-ratio: 100%">
+                        {% if product.featured_image %}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 1125 }}"
+                            alt="{{ product.title }}"
+                            class="product-card-image"
+                            sizes="100vw"
+                            style="object-position: center;"
+                            width="{{ product.featured_image.width }}"
+                            height="{{ product.featured_image.height }}"
+                            loading="lazy"
+                          >
+                        {% else %}  
+                          {% assign index = forloop.index0 | modulo: 6 | plus: 1 %}
+                          {{ 'product-' | append: index | placeholder_svg_tag }}   
+                        {% endif %}
+                      </div>
+                    </a>
+                    {% assign product_index = product_index | plus: 1 %} 
+                  {% comment %} {% endif %} {% endcomment %}
+                {% endif %}
+              {% endfor %} 
+               
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+ 
+    function initTabSection() {
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const contents = Array.from(document.querySelectorAll('.featured-collections-list-tabscontent-inner'));
+      const texts = Array.from(document.querySelectorAll('.featured-collections-list-text'));
+      const wrapper = document.querySelector('.mt-{{ section.id }}');
+      
+      function centerActiveTab(activeIndex) {
+        const totalTabs = tabs.length;
+        const centerPosition = Math.floor(totalTabs / 2);
+
+        // Clear previous active classes
+        tabs.forEach((tab) => tab.classList.remove('active'));
+        contents.forEach((content) => content.classList.remove('active'));
+        texts.forEach((text) => text.classList.remove('fade-in'));
+
+        // Active tab and data attributes
+        const activeTab = tabs[activeIndex];
+        const tabId = activeTab.getAttribute('data-btn');
+        const bgColor = activeTab.getAttribute('data-color');
+        wrapper.style.background = bgColor;
+
+        // Add active class to corresponding content
+        const activeContent = contents.find((content) => content.getAttribute('data-collection-id') === tabId);
+        const activeText = texts.find((text) => text.getAttribute('data-text-id') === tabId);
+
+        if (activeContent) {
+          activeContent.classList.add('active');
+        }
+
+        if (activeText) {
+          activeText.classList.add('fade-in'); 
+        }
+
+        // animateHeadingText
+
+        // Centering logic
+        const newOrder = Array(totalTabs).fill(null);
+        newOrder[centerPosition] = activeIndex;
+
+        let left = centerPosition - 1;
+        let right = centerPosition + 1;
+
+        for (let i = 0; i < totalTabs; i++) {
+          if (i === activeIndex) continue;
+          if (left >= 0) {
+            newOrder[left--] = i;
+          } else if (right < totalTabs) {
+            newOrder[right++] = i;
+          }
+        }
+
+        newOrder.forEach((tabIndex, visualOrder) => {
+          tabs[tabIndex].style.order = visualOrder;
+        });
+
+        activeTab.classList.add('active');
+      }
+
+      // Initial load
+      centerActiveTab(0);
+
+      // Click event for each tab
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+          centerActiveTab(index);
+        });
+      });
+    }
+
+    function animateHeadingText(selector) {
+      document.querySelectorAll(selector).forEach(heading => {
+        const text = heading.dataset.originalText || heading.textContent.trim();
+
+        // Save original text if first time
+        if (!heading.dataset.originalText) {
+          heading.dataset.originalText = text;
+        }
+
+        heading.innerHTML = ''; // clear original
+
+        text.split(' ').forEach((word, wordIndex) => {
+          const wordContainer = document.createElement('div');
+          wordContainer.className = 'featureWordParent';
+
+          word.split('').forEach((letter, letterIndex) => {
+            const letterDiv = document.createElement('div');
+            letterDiv.className = 'featureLetter';
+            letterDiv.textContent = letter;
+            letterDiv.style.animationDelay = `${(wordIndex * 0.3) + (letterIndex * 0.05)}s`;
+            wordContainer.appendChild(letterDiv);
+          });
+
+          heading.appendChild(wordContainer);
+        });
+      });
+    }
+
+    // Run on page load
+    animateHeadingText('.featured-collections-list-text-heading');
+
+    // Example: Run again when tab changes
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        animateHeadingText('.featured-collections-list-text-heading');
+      });
+    });
+
+    
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const newwinr = document.querySelector('#shopify-section-{{ section.id }}');
+      
+
+      const section = document.querySelector('.mt-{{ section.id }}');
+      const targetElement = document.querySelector('.mt-container-{{ section.id }}');
+      const textElement = document.querySelector('.mt-front-{{ section.id }}');
+      const slider = document.querySelector('.featured-collections-list-tabscontent');
+      const content = document.querySelector('.featured-collections-text-wrapper');
+
+      let alreadyTriggered = false;
+      let sectionTopZeroScrollY = null;
+      let widthScrollStartY = null; // NEW — point where we start width change
+      let widthStageActive = false; // NEW — flag for stage 2 
+      
+      let stageState = "init"; // init | mediaHidden | imageShown
+
+      if (section && targetElement && textElement && slider) {
+        window.addEventListener('scroll', () => {
+          const y = window.scrollY;
+          const newsectionTop = newwinr.offsetTop;
+          const relativeY = y - newsectionTop; // scroll inside the section
+
+          console.log('Scroll Y:', y);
+          console.log('Relative scroll inside section:', relativeY);
+          
+          const sectionRect = section.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const sectionTop = sectionRect.top;
+
+          if (Math.abs(sectionTop) < 1 && sectionTopZeroScrollY === null) {
+            sectionTopZeroScrollY = window.scrollY;
+          }
+
+          let scrollTop = 0;
+          if (sectionTopZeroScrollY !== null) {
+            scrollTop = Math.max(0, window.scrollY - sectionTopZeroScrollY);
+          }
+
+          if (sectionTop <= 100 && !alreadyTriggered) {
+            targetElement.classList.add('sticky-active');
+            textElement.classList.add('fade-out-text');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            alreadyTriggered = true;
+          } else if (sectionTop > 100) {
+            targetElement.classList.remove('sticky-active');
+            textElement.classList.remove('fade-out-text');
+            alreadyTriggered = false;
+            sectionTopZeroScrollY = null;
+            widthStageActive = false;
+            widthScrollStartY = null;
+          }
+
+          slider.style.opacity = targetElement.classList.contains('sticky-active') ? '1' : '0.3';
+
+          if (targetElement.classList.contains('sticky-active')) {
+            const minScroll = 0;
+            const maxScroll = sectionRect.height / 2;
+            const clampedScroll = Math.max(minScroll, Math.min(scrollTop, maxScroll));
+            const progress = (clampedScroll - minScroll) / (maxScroll - minScroll);
+
+            const translateX = -100 + progress * 100;
+            const scale = 0.7 + progress * (1 - 0.7);
+
+            slider.style.transform = `translate(${translateX}%, 0%) scale(${scale})`;
+
+            const textWrapper = document.querySelector('.featured-collections-text-wrapper');
+            const tabscontentItems = document.querySelectorAll('.tabscontent-inner-text-inner');
+          
+            const scrolledSinceStage = window.scrollY;
+            if (textWrapper) {
+              var newOpacity = translateX >= 0 ? 1 : 0;
+
+              {% comment %} console.log('clampedScroll---', clampedScroll); {% endcomment %}
+
+              if (newOpacity === 1 && textWrapper.style.opacity !== '1') {
+                animateHeadingText('.featured-collections-list-text-heading');
+              }
+
+              // Set opacity for the main wrapper
+              textWrapper.style.opacity = newOpacity;
+
+              {% comment %} console.log(scrolledSinceStage, 'scrolledSinceStage'); {% endcomment %}
+              
+              // Set opacity for each tabscontent item
+              if (scrolledSinceStage > 1700) {
+                tabscontentItems.forEach(item => {
+                  item.style.opacity = newOpacity;
+                });
+              }
+              else {
+                tabscontentItems.forEach(item => {
+                  item.style.opacity = 0;
+                });
+              }
+            }
+            
+            if (translateX === 0 && !widthStageActive) { 
+              widthStageActive = true;
+              widthScrollStartY = window.scrollY; // starting point for width animation
+            }
+            
+            // Stage 2: Change width from 14% to 100% only AFTER stage is active
+            if (widthStageActive) { 
+              const scrolledSinceStage = window.scrollY - widthScrollStartY;
+
+              {% comment %} const widthMin = 30;
+              const widthMax = 100;
+              const widthProgress = Math.min(1, scrolledSinceStage / 500); // 500px scroll to finish width
+              const width = widthMin + (widthMax - widthMin) * widthProgress; {% endcomment %}
+
+              const widthProgress = Math.min(1, Math.max(0, scrolledSinceStage / 500)); 
+              const width = widthProgress * 100; // goes from 0% → 100%
+
+              
+              tabscontentItems.forEach(item => {
+                item.style.width = width + '%';
+              }); 
+  
+              const cardText = document.querySelectorAll('.card-text.text');
+              const mediaWrapper = document.querySelectorAll('.tabscontent-inner-media.media-wrapper.list-mainmedia');
+              const imageWrapper = document.querySelectorAll('a.tabscontent-inner-media.media-wrapper');
+  
+
+              if(width === 100) {
+                cardText.forEach(item => {
+                  item.style.transition = "opacity 0.4s ease";
+                  
+                });
+
+                cardText.forEach(block => {
+                  block.style.opacity = '1'; 
+                  if (!block.dataset.split) {
+                    block.innerHTML = [...block.textContent.trim()].map(c =>
+                      `<span class="fade-letter" style="opacity:0">${c === " " ? "&nbsp;" : c}</span>`
+                    ).join('');
+                    block.dataset.split = "true";
+                  }
+                  block.querySelectorAll(".fade-letter").forEach((l, i) =>
+                    setTimeout(() => {
+                      l.style.transition = "opacity .4s ease";
+                      l.style.opacity = "1";
+                    }, i * 50)
+                  );
+                });
+
+              } else {
+                cardText.forEach(block => {
+                  block.style.opacity = '0'; 
+                }); 
+              }
+
+              if (scrolledSinceStage > 707 && stageState !== "imageShown") {
+                stageState = "imageShown";
+
+                // Hide mediaWrapper
+                mediaWrapper.forEach(item => {
+                  item.style.transition = "transform 0.6s ease";
+                  item.style.transform = "translate3d(0px, 0px, 0px) scale(0)";
+                });
+
+                // After mediaWrapper transition → show imageWrapper
+                mediaWrapper.forEach(item => {
+                  item.addEventListener("transitionend", () => {
+                    imageWrapper.forEach(img => {
+                      img.style.transition = "transform 0.6s ease";
+                      img.style.transform = "translate3d(0px,0px,0px) scale(1)";
+                    });
+                  }, { once: true });
+                });
+              } else if (scrolledSinceStage < 670 && stageState !== "mediaShown") {
+                stageState = "mediaShown";
+
+                // Hide imageWrapper
+                imageWrapper.forEach(img => {
+                  img.style.transition = "transform 0.6s ease";
+                  img.style.transform = "translate3d(0px, 0px, 0px) scale(0)";
+                });
+
+                // After imageWrapper transition → show mediaWrapper
+                imageWrapper.forEach(img => {
+                  img.addEventListener("transitionend", () => {
+                    mediaWrapper.forEach(item => {
+                      item.style.transition = "transform 0.6s ease";
+                      item.style.transform = "translate3d(0px,0px,0px) scale(1)";
+                    });
+                  }, { once: true });
+                });
+              }
+            }
+            
+          }
+          
+        });
+      }
+    });
+  
+    document.addEventListener('DOMContentLoaded', initTabSection);
+
+    if (Shopify.designMode) {
+      document.addEventListener('shopify:section:load', initTabSection);
+      document.addEventListener('shopify:section:unload', initTabSection);
+      document.addEventListener('shopify:section:select', initTabSection);
+      document.addEventListener('shopify:section:deselect', initTabSection);
+      document.addEventListener('shopify:block:select', initTabSection);
+      document.addEventListener('shopify:block:deselect', initTabSection);
+    }  
+
+ 
+{% comment %} /* -------------------------------
+   Animate Heading Text (global)
+--------------------------------*/ {% endcomment %}
+{% comment %} function animateHeadingText(selector) {
+  document.querySelectorAll(selector).forEach(heading => {
+    const text = heading.dataset.originalText || heading.textContent.trim();
+
+    if (!heading.dataset.originalText) {
+      heading.dataset.originalText = text;
+    }
+
+    heading.innerHTML = '';
+
+    text.split(' ').forEach((word, wordIndex) => {
+      const wordContainer = document.createElement('div');
+      wordContainer.className = 'featureWordParent';
+
+      word.split('').forEach((letter, letterIndex) => {
+        const letterDiv = document.createElement('div');
+        letterDiv.className = 'featureLetter';
+        letterDiv.textContent = letter;
+        letterDiv.style.animationDelay = `${(wordIndex * 0.3) + (letterIndex * 0.05)}s`;
+        wordContainer.appendChild(letterDiv);
+      });
+
+      heading.appendChild(wordContainer);
+    });
+  });
+}
+
+{% comment %} /* -------------------------------
+   Clear old event listeners
+--------------------------------*/ {% endcomment %}
+function clearTabSection(sectionId) {
+  const section = document.querySelector(`.mt-${sectionId}`);
+  if (!section) return;
+
+  const tabs = section.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    const newTab = tab.cloneNode(true);
+    tab.parentNode.replaceChild(newTab, tab);
+  });
+}
+
+{% comment %} /* -------------------------------
+   Init Tab + Scroll Section
+--------------------------------*/ {% endcomment %}
+function initTabSection(sectionId) {
+  const section = document.querySelector(`.mt-${sectionId}`);
+  if (!section) return;
+
+  clearTabSection(sectionId); // avoid duplicate listeners
+
+  const tabs = Array.from(section.querySelectorAll('.tab'));
+  const contents = Array.from(section.querySelectorAll('.featured-collections-list-tabscontent-inner'));
+  const texts = Array.from(section.querySelectorAll('.featured-collections-list-text'));
+  const wrapper = section;
+
+  function centerActiveTab(activeIndex) {
+    const totalTabs = tabs.length;
+    const centerPosition = Math.floor(totalTabs / 2);
+
+    tabs.forEach(tab => tab.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+    texts.forEach(t => t.classList.remove('fade-in'));
+
+    const activeTab = tabs[activeIndex];
+    if (!activeTab) return;
+
+    const tabId = activeTab.getAttribute('data-btn');
+    const bgColor = activeTab.getAttribute('data-color');
+    wrapper.style.background = bgColor;
+
+    const activeContent = contents.find(c => c.getAttribute('data-collection-id') === tabId);
+    const activeText = texts.find(t => t.getAttribute('data-text-id') === tabId);
+
+    if (activeContent) activeContent.classList.add('active');
+    if (activeText) activeText.classList.add('fade-in');
+
+    const newOrder = Array(totalTabs).fill(null);
+    newOrder[centerPosition] = activeIndex;
+
+    let left = centerPosition - 1;
+    let right = centerPosition + 1;
+
+    for (let i = 0; i < totalTabs; i++) {
+      if (i === activeIndex) continue;
+      if (left >= 0) newOrder[left--] = i;
+      else if (right < totalTabs) newOrder[right++] = i;
+    }
+
+    newOrder.forEach((tabIndex, visualOrder) => {
+      tabs[tabIndex].style.order = visualOrder;
+    });
+
+    activeTab.classList.add('active');
+  }
+
+  // Initial load
+  centerActiveTab(0);
+
+  // Tab click events
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      centerActiveTab(index);
+      animateHeadingText('.featured-collections-list-text-heading');
+    });
+  });
+
+  {% comment %}  Scroll-based animation logic {% endcomment %}
+  const targetElement = section.querySelector(`.mt-container-${sectionId}`);
+  const textElement = section.querySelector(`.mt-front-${sectionId}`);
+  const slider = section.querySelector('.featured-collections-list-tabscontent');
+  const textWrapper = section.querySelector('.featured-collections-text-wrapper');
+  const tabscontentItems = section.querySelectorAll('.tabscontent-inner-text-inner');
+  const cardText = section.querySelectorAll('.card-text.text');
+  const mediaWrapper = section.querySelectorAll('.tabscontent-inner-media.media-wrapper.list-mainmedia');
+  const imageWrapper = section.querySelectorAll('a.tabscontent-inner-media.media-wrapper');
+
+  let alreadyTriggered = false;
+  let sectionTopZeroScrollY = null;
+  let widthScrollStartY = null;
+  let widthStageActive = false;
+  let stageState = "init";
+
+  if (section && targetElement && textElement && slider) {
+    window.addEventListener('scroll', () => {
+      const sectionRect = section.getBoundingClientRect();
+      const sectionTop = sectionRect.top;
+
+      if (Math.abs(sectionTop) < 1 && sectionTopZeroScrollY === null) {
+        sectionTopZeroScrollY = window.scrollY;
+      }
+
+      let scrollTop = 0;
+      if (sectionTopZeroScrollY !== null) {
+        scrollTop = Math.max(0, window.scrollY - sectionTopZeroScrollY);
+      }
+
+      if (sectionTop <= 100 && !alreadyTriggered) {
+        targetElement.classList.add('sticky-active');
+        textElement.classList.add('fade-out-text');
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        alreadyTriggered = true;
+      } else if (sectionTop > 100) {
+        targetElement.classList.remove('sticky-active');
+        textElement.classList.remove('fade-out-text');
+        alreadyTriggered = false;
+        sectionTopZeroScrollY = null;
+        widthStageActive = false;
+        widthScrollStartY = null;
+      }
+
+      slider.style.opacity = targetElement.classList.contains('sticky-active') ? '1' : '0.3';
+
+      if (targetElement.classList.contains('sticky-active')) {
+        const minScroll = 0;
+        const maxScroll = sectionRect.height / 2;
+        const clampedScroll = Math.max(minScroll, Math.min(scrollTop, maxScroll));
+        const progress = (clampedScroll - minScroll) / (maxScroll - minScroll);
+
+        const translateX = -100 + progress * 100;
+        const scale = 0.7 + progress * (1 - 0.7);
+
+        slider.style.transform = `translate(${translateX}%, 0%) scale(${scale})`;
+
+        if (textWrapper) {
+          var newOpacity = translateX >= 0 ? 1 : 0;
+          if (newOpacity === 1 && textWrapper.style.opacity !== '1') {
+            animateHeadingText('.featured-collections-list-text-heading');
+          }
+          textWrapper.style.opacity = newOpacity;
+
+          if (window.scrollY > 1700) {
+            tabscontentItems.forEach(item => item.style.opacity = newOpacity);
+          } else {
+            tabscontentItems.forEach(item => item.style.opacity = 0);
+          }
+        }
+
+        if (translateX === 0 && !widthStageActive) {
+          widthStageActive = true;
+          widthScrollStartY = window.scrollY;
+        }
+
+        if (widthStageActive) {
+          const scrolledSinceStage = window.scrollY - widthScrollStartY;
+          const widthMin = 30;
+          const widthMax = 100;
+          const widthProgress = Math.min(1, scrolledSinceStage / 500);
+          const width = widthMin + (widthMax - widthMin) * widthProgress;
+
+          tabscontentItems.forEach(item => {
+            item.style.width = width + '%';
+          });
+
+          if (width === 100) {
+            cardText.forEach(block => {
+              block.style.opacity = '1';
+              if (!block.dataset.split) {
+                block.innerHTML = [...block.textContent.trim()].map(c =>
+                  `<span class="fade-letter" style="opacity:0">${c === " " ? "&nbsp;" : c}</span>`
+                ).join('');
+                block.dataset.split = "true";
+              }
+              block.querySelectorAll(".fade-letter").forEach((l, i) =>
+                setTimeout(() => {
+                  l.style.transition = "opacity .4s ease";
+                  l.style.opacity = "1";
+                }, i * 50)
+              );
+            });
+          } else {
+            cardText.forEach(block => block.style.opacity = '0');
+          }
+
+          if (scrolledSinceStage > 707 && stageState !== "imageShown") {
+            stageState = "imageShown";
+            mediaWrapper.forEach(item => {
+              item.style.transition = "transform 0.6s ease";
+              item.style.transform = "translate3d(0px, 0px, 0px) scale(0)";
+            });
+            mediaWrapper.forEach(item => {
+              item.addEventListener("transitionend", () => {
+                imageWrapper.forEach(img => {
+                  img.style.transition = "transform 0.6s ease";
+                  img.style.transform = "translate3d(0px,0px,0px) scale(1)";
+                });
+              }, { once: true });
+            });
+          } else if (scrolledSinceStage < 670 && stageState !== "mediaShown") {
+            stageState = "mediaShown";
+            imageWrapper.forEach(img => {
+              img.style.transition = "transform 0.6s ease";
+              img.style.transform = "translate3d(0px, 0px, 0px) scale(0)";
+            });
+            imageWrapper.forEach(img => {
+              img.addEventListener("transitionend", () => {
+                mediaWrapper.forEach(item => {
+                  item.style.transition = "transform 0.6s ease";
+                  item.style.transform = "translate3d(0px,0px,0px) scale(1)";
+                });
+              }, { once: true });
+            });
+          }
+        }
+      }
+    });
+  }
+}
+
+{% comment %}  Init on Load + Design Mode   {% endcomment %}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTabSection('{{ section.id }}');
+});
+
+if (Shopify.designMode) {
+  document.addEventListener('shopify:section:load', e => {
+    initTabSection(e.detail.sectionId);
+  });
+  document.addEventListener('shopify:section:select', e => {
+    initTabSection(e.detail.sectionId);
+  });
+  document.addEventListener('shopify:block:select', e => {
+    initTabSection(e.detail.sectionId);
+  });
+} {% endcomment %}
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Collection List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "STYLE CRAFTED TO PERFECTION"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "label": "XXX-large",
+          "value": "h1-large"
+        },
+        {
+          "label": "XX-large",
+          "value": "h1"
+        },
+        {
+          "label": "X-large",
+          "value": "h2"
+        },
+        {
+          "label": "Large",
+          "value": "h3"
+        },
+        {
+          "label": "Medium",
+          "value": "h4"
+        },
+        {
+          "label": "Small",
+          "value": "h5"
+        },
+        {
+          "label": "X-small",
+          "value": "h6"
+        },
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover fashion that fits every mood! Explore our diverse collections, from casual essentials to statement trends. Find the perfect style for every occasion"
+    },
+    {
+      "type": "select",
+      "id": "description_size",
+      "label": "Description size",
+      "options": [
+        {
+          "label": "XX-small",
+          "value": "text-xxs"
+        },
+        {
+          "label": "X-small",
+          "value": "text-xs"
+        },
+        {
+          "label": "Small",
+          "value": "text-sm"
+        },
+        {
+          "label": "Normal",
+          "value": "text"
+        },
+        {
+          "label": "Medium",
+          "value": "text-md"
+        },
+        {
+          "label": "Large",
+          "value": "text-lg"
+        },
+        {
+          "label": "X-large",
+          "value": "text-xl"
+        }
+      ],
+      "default": "text-xs"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Tab"
+        },
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab title",
+          "default": "Tab title"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_svg",
+          "label": "Custom SVG Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "COVER YOURSELF IN WINTER COMFORT",
+          "info": "Maximum 50 characters."
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            {
+              "label": "XXX-large",
+              "value": "h1-large"
+            },
+            {
+              "label": "XX-large",
+              "value": "h1"
+            },
+            {
+              "label": "X-large",
+              "value": "h2"
+            },
+            {
+              "label": "Large",
+              "value": "h3"
+            },
+            {
+              "label": "Medium",
+              "value": "h4"
+            },
+            {
+              "label": "Small",
+              "value": "h5"
+            },
+            {
+              "label": "X-small",
+              "value": "h6"
+            },
+          ],
+          "default": "h1"
+        }, 
+        {
+          "type": "header",
+          "content": "Description"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Add collection's short description here."
+        }, 
+        {
+          "type": "select",
+          "id": "description_size",
+          "label": "Description size",
+          "options": [
+            {
+              "label": "XX-small",
+              "value": "text-xxs"
+            },
+            {
+              "label": "X-small",
+              "value": "text-xs"
+            },
+            {
+              "label": "Small",
+              "value": "text-sm"
+            },
+            {
+              "label": "Normal",
+              "value": "text"
+            },
+            {
+              "label": "Medium",
+              "value": "text-md"
+            },
+            {
+              "label": "Large",
+              "value": "text-lg"
+            },
+            {
+              "label": "X-large",
+              "value": "text-xl"
+            }
+          ],
+          "default": "text-xs"
+        },
+        {
+          "type": "header",
+          "content": "Content settings"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "typewriter_text",
+          "label": "Typewriter text",
+          "default": "Add typewriter text!",
+          "info": "Maximum 40 characters."
+        },
+        {
+          "type": "header",
+          "content": "Color settings"
+        },
+        {
+          "type": "color",
+          "id": "content_text_color",
+          "label": "Content Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "active_text_color",
+          "label": "Tab Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "active_bg_color",
+          "label": "Tab Background Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color_background",
+          "id": "active_tab_bg_color",
+          "label": "Active Tab Main Background Color",
+          "default": "radial-gradient(rgb(37, 45, 0), rgb(0, 0, 0) 73%)"
+        }, 
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Collection List",
+      "blocks": [
+        {
+          "type": "collection",
+          "settings": {
+            "active_text_color": "#000000",
+            "active_bg_color": "#FFFFFF",
+            "active_tab_bg_color": "radial-gradient(rgb(228 100 21), rgb(2 2 1) 65%)"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "active_text_color": "#000000",
+            "active_bg_color": "#FFFFFF",
+            "active_tab_bg_color": "radial-gradient(rgba(37, 45, 0, 1), rgba(0, 0, 0, 1) 73%)"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "active_text_color": "#FFFFFF",
+            "active_bg_color": "#000000",
+            "active_tab_bg_color": "radial-gradient(rgb(142 9 67), rgb(2 2 1) 65%)"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
